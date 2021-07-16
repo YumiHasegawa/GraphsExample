@@ -85,6 +85,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Highsoft.Highcharts" Version="9.1.2" />
+    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="5.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />

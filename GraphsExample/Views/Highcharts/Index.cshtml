@@ -1,0 +1,47 @@
+﻿@using Omu.Awem.Helpers
+@using Omu.AwesomeMvc
+@using Highsoft.Web.Mvc.Charts
+@using Highsoft.Web.Mvc.Charts.Rendering;
+@using System.Collections.Generic;
+@using GraphsExample.Helpers
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+@model GraphsExample.ViewModels.HighchartsViewModel
+@{
+    ViewData["Title"] = "Highcharts";
+}
+
+@using (Html.Awe().BeginContext())
+{
+    @Html.DisplayForModel()
+    var grid = "Highcharts";
+    var gridId = Html.Awe().GetContextPrefix() + grid;
+
+    <div>
+        @(Html.Awe().Grid(grid)
+            .Url(Url.Action("GridGetItems", "Highcharts"))
+            .RowClassClientFormat("infoBackground")
+            .Mod(a => a.Loading(true, true, "no items"))
+            .Columns(
+                new Column { Bind = "Values", Header = "Graph column", Width = 200, ClientFormatFunc = "getGraph" },
+                new Column { Header = "Any column" }
+            )
+        .ShowGroupBar(false)
+        .Groupable(false)
+        .Sortable(false)
+        .Reorderable(false)
+        .Resizable(true)
+        .Paging(false)
+        .Persistence(Persistence.None))
+    </div>
+
+    @Html.Raw(GridUtils.ChartFormat(gridId, id: ".(Id)"))
+
+    <script>
+        function getGraph(o) {
+            return @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(GridUtils.ChartFormat(gridId, id: ".(Id)")));
+        }
+    </script>
+}
