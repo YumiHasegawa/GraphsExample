@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Omu.Awem.Helpers
+@using Omu.AwesomeMvc
+@model GraphsExample.ViewModels.MicrosoftChartsViewModel
 @{
+    ViewData["Title"] = "Microsoft Charts";
+}
+
+@using (Html.Awe().BeginContext())
+{
+    @Html.DisplayForModel()
+    var grid = "MicrosoftCharts";
+    var gridId = Html.Awe().GetContextPrefix() + grid;
+
+    <div>
+        @(Html.Awe().Grid(grid)
+            .Url(Url.Action("GridGetItems", "MicrosoftCharts"))
+            .RowClassClientFormat("infoBackground")
+            .Mod(a => a.Loading(true, true, "no items"))
+            .Columns(
+                new Column { Bind = "Values", Header = "Small column", Width = 200 },
+                new Column { Bind = "Values", Header = "Large column" }
+            )
+        .ShowGroupBar(false)
+        .Groupable(false)
+        .Sortable(false)
+        .Reorderable(false)
+        .Resizable(true)
+        .Paging(false)
+        .Persistence(Persistence.None))
+    </div>
 }
