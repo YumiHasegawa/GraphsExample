@@ -1,0 +1,102 @@
+﻿@using Omu.Awem.Helpers
+@using Omu.AwesomeMvc
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Graphs Example</title>
+    <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")" type="image/x-icon" />
+    <link rel="apple-touch-icon image_src" href="@Url.Content("~/apple-touch-icon.png")">
+
+    <link href="@Url.Content("~/css/themes/start/AwesomeMvc.css")" rel="stylesheet" type="text/css" id="aweStyle" asp-append-version="true" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
+    </environment>
+    <script src="~/js/tptJqueryHelper.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+</head>
+<body class="start">
+    @await Html.PartialAsync("Header")
+    <div class="page">
+        <div id="main" style="clear: both;">
+            <main id="maincont" role="main" class="pb-3">
+                @RenderBody()
+                <br />
+                <br />
+                <br />
+                <br style="clear: both;" />
+            </main>
+        </div>
+        <nav id="footer" role="navigation">
+            <div>
+                &copy; TakeProfit Technology @DateTime.UtcNow.Year
+            </div>
+        </nav>
+    </div>
+
+    <script src="@Url.Content("~/js/AwesomeMvc.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/awem.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/aweui.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/awe.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/awef.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/awedict.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/infra/aweq.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/infra/awevld.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/infra/formBuilder.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/infra/gridUtils.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/infra/strUtil.js")" type="text/javascript" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/utils.js")" type="text/javascript" asp-append-version="true"></script>
+
+    @*install Bundler & Minifier vsx for the site.min.js to update on save*@
+    @*ToDo: Change on site.min.js*@
+    <script src="@Url.Content("~/js/sidemenu.js")" type="text/javascript" asp-append-version="true"></script>
+
+    @*call init after utils.js and validate.js*@
+    @Html.Awe().Init()
+
+    @*used in utils.init and sent on all post requests made by awe*@
+    @Html.AntiForgeryToken()
+
+    <script>
+        $(function () {
+            site.documentReady();
+        });
+    </script>
+
+    <environment include="Development">
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+        </script>
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

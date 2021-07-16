@@ -1,0 +1,17 @@
+﻿@using Omu.Awem.Helpers
+@using Omu.AwesomeMvc
+    @{
+        var action = ViewContext.RouteData.Values["Action"];
+        var controller = ViewContext.RouteData.Values["Controller"];
+    }
+        @(Html.Awe().Grid("HeaderMenu")
+            .Mod(o => o.Loading(false).CustomRender("sideMenu.menutree"))
+            .DataFunc(string.Format("sideMenu.getMenuGridFunc(site.getSideMenuData('{0}'))", Url.Action("GetMenuNodes", "Menu")))
+            .ShowGroupBar(false)
+            .ShowHeader(false)
+            .ShowFooter(false)
+            .Parameter("controller", controller)
+            .Parameter("action", action)
+            .RowClassClientFormat(".(Selected)")
+            )
+@*tag.ItemsUrl is used in getMenuGridFunc (site.js) to load the items first time the user enters the site*@
