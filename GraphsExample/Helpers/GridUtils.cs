@@ -127,48 +127,5 @@ namespace GraphsExample.Helpers
                 .Text(text)
                 .OnClick(onClick);
         }
-
-        public static string ChartFormat(string gridId, string id) //, object data
-        {
-            List<double> londonValues = new List<double> { 48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2 };
-            List<ColumnSeriesData> londonData = new List<ColumnSeriesData>();
-            londonValues.ForEach(p => londonData.Add(new ColumnSeriesData
-            {
-                Y = p
-            }));
-
-            var chartOptions = new Highcharts
-            {
-                Title = new Title
-                {
-                    Text = "Monthly Average Rainfall"
-                },
-
-                XAxis = new List<XAxis> { new XAxis { Categories = new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" } } },
-                YAxis = new List<YAxis> { new YAxis { Min = 0, Title = new YAxisTitle { Text = "Rainfall (mm)" } } },
-                Tooltip = new Tooltip
-                {
-                    HeaderFormat = "<span style='font-size:10px'>{point.key}</span><table style='font-size:12px'>",
-                    PointFormat = "<tr><td style='color:{series.color};padding:0'>{series.name}: </td><td style='padding:0'><b>{point.y:.1f} mm</b></td></tr>",
-                    FooterFormat = "</table>",
-                    Shared = true,
-                    UseHTML = true
-                },
-                PlotOptions = new PlotOptions
-                {
-                    Column = new PlotOptionsColumn
-                    {
-                        PointPadding = 0.2,
-                        BorderWidth = 0
-                    }
-                },
-                Series = new List<Series> { new ColumnSeries { Name = "London", Data = londonData } }
-            };
-            chartOptions.ID = "chart";
-            var renderer = new HighchartsRenderer(chartOptions);
-            var div = renderer.RenderHtml();
-
-            return div;
-        }
     }
 }

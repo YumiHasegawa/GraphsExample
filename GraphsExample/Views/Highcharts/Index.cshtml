@@ -1,9 +1,5 @@
 ﻿@using Omu.Awem.Helpers
 @using Omu.AwesomeMvc
-@using Highsoft.Web.Mvc.Charts
-@using Highsoft.Web.Mvc.Charts.Rendering;
-@using System.Collections.Generic;
-@using GraphsExample.Helpers
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -37,11 +33,27 @@
         .Persistence(Persistence.None))
     </div>
 
-    @Html.Raw(GridUtils.ChartFormat(gridId, id: ".(Id)"))
+    <script type="text/javascript">
+        async function getGraph(o) {
+            let func = $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: {
+                    "valuesStr": JSON.stringify(o.values),
+                    "chartName": "Values"
+                },
+                async: true,
+                url: '/Highcharts/GetChartByValues'
+            }).then(function (response) { return response });
 
-    <script>
-        function getGraph(o) {
-            return @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(GridUtils.ChartFormat(gridId, id: ".(Id)")));
+            let text = await func;
+
+            alert(text);
+            //split
+            var arr = text.split('<script');
+            document.body.append('<script' + arr[1]);
+            return arr[0];
         }
     </script>
 }
