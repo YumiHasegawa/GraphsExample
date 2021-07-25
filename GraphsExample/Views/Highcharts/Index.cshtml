@@ -1,10 +1,11 @@
 ﻿@using Omu.Awem.Helpers
 @using Omu.AwesomeMvc
+@using GraphsExample.Helpers
+@model GraphsExample.ViewModels.HighchartsViewModel
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-@model GraphsExample.ViewModels.HighchartsViewModel
 @{
     ViewData["Title"] = "Highcharts";
 }
@@ -14,6 +15,7 @@
     @Html.DisplayForModel()
     var grid = "Highcharts";
     var gridId = Html.Awe().GetContextPrefix() + grid;
+    object gg = null;
 
     <div>
         @(Html.Awe().Grid(grid)
@@ -21,7 +23,7 @@
             .RowClassClientFormat("infoBackground")
             .Mod(a => a.Loading(true, true, "no items"))
             .Columns(
-                new Column { Bind = "Values", Header = "Graph column", Width = 200, ClientFormatFunc = "getGraph" },
+                new Column { Header = "Graph column", Width = 200, ClientFormatFunc = "getGraph" },
                 new Column { Header = "Any column" }
             )
         .ShowGroupBar(false)
@@ -34,8 +36,9 @@
     </div>
 
     <script type="text/javascript">
-        async function getGraph(o) {
-            let func = $.ajax({
+        /*function getGraph(o) {
+            var v = "<div>111</div>";
+            $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -43,17 +46,31 @@
                     "valuesStr": JSON.stringify(o.values),
                     "chartName": "Values"
                 },
-                async: true,
+                async: false,
                 url: '/Highcharts/GetChartByValues'
-            }).then(function (response) { return response });
+            }).then(function (response) {
+                var arr = response.split('<script');
+                $('<script' + arr[1]).appendTo(document.body);
+                v = arr[0];
+            });
+            console.log(v);
+            return v;
+        }*/
 
-            let text = await func;
-
-            alert(text);
-            //split
-            var arr = text.split('<script');
-            document.body.append('<script' + arr[1]);
+        function getGraph(o) {
+            @gg = o;
+            console.log(@gg);
+            var result = @(GridUtils.GetGraph(@o, "Values"));
+            console.log(result);
+            var v = result.split('<script');
+            $('<script' + arr[1]).appendTo(document.body);
             return arr[0];
         }
+
+        $(document).ready(function() {
+            $('#@(gridId)').on('aweload', function (e, data) {
+
+            });
+        });
     </script>
 }

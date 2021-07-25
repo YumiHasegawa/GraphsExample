@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
+using GraphsExample.Models;
 using Highsoft.Web.Mvc.Charts;
 using Highsoft.Web.Mvc.Charts.Rendering;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using Omu.AwesomeMvc;
 
 namespace GraphsExample.Helpers
@@ -126,6 +129,60 @@ namespace GraphsExample.Helpers
             return html.Awe().Button()
                 .Text(text)
                 .OnClick(onClick);
+        }
+
+        public static string GetGraph(string valuesStr, string chartName)
+        {
+            try
+            {
+                List<ColumnSeriesData> data = new List<ColumnSeriesData>();
+                var values = JsonConvert.DeserializeObject<List<DataPoint>>(valuesStr);
+                if (values == null)
+                {
+                    return null;
+                }
+
+                values.ToList().ForEach(p => data.Add(new ColumnSeriesData
+                {
+                    X = p.X,
+                    Y = p.Y
+                }));
+
+                var chartOptions = new Highcharts
+                {
+                    Title = new Title
+                    {
+                        Text = "Monthly Average Rainfall"
+                    },
+
+                    XAxis = new List<XAxis> { new XAxis { Min = 0, Title = new XAxisTitle { Text = "XValues" } } },
+                    YAxis = new List<YAxis> { new YAxis { Min = 0, Title = new YAxisTitle { Text = "YValues" } } },
+                    Tooltip = new Tooltip
+                    {
+                        HeaderFormat = "<span style='font-size:10px'>{point.key}</span><table style='font-size:12px'>",
+                        PointFormat = "<tr><td style='color:{series.color};padding:0'>{series.name}: </td><td style='padding:0'><b>{point.y:.1f} mm</b></td></tr>",
+                        FooterFormat = "</table>",
+                        Shared = true,
+                        UseHTML = true
+                    },
+                    PlotOptions = new PlotOptions
+                    {
+                        Column = new PlotOptionsColumn
+                        {
+                            PointPadding = 0.2,
+                            BorderWidth = 0
+                        }
+                    },
+                    Series = new List<Series> { new ColumnSeries { Name = chartName, Data = data } }
+                };
+                chartOptions.ID = $"{chartName}";
+                var renderer = new HighchartsRenderer(chartOptions);
+                return renderer.RenderHtml();
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
