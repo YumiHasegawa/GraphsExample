@@ -1,25 +1,22 @@
 ﻿using GraphsExample.Models;
 using GraphsExample.ViewModels;
-using Highsoft.Web.Mvc.Charts;
-using Highsoft.Web.Mvc.Charts.Rendering;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Omu.AwesomeMvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Helpers;
+using System.Threading.Tasks;
 
 namespace GraphsExample.Controllers
 {
-    public class HighchartsController : Controller
+    public class ChartsController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
 
-        private object MapToGridModel(HighchartsViewModel o)
+        private object MapToGridModel(ChartsViewModel o)
         {
             return
                 new
@@ -40,8 +37,8 @@ namespace GraphsExample.Controllers
                 dataPoints.Add(new DataPoint(i, y));
             }
 
-            var items = new List<HighchartsViewModel>() { new HighchartsViewModel { Id = 1, Values = dataPoints } };
-            return Json(new GridModelBuilder<HighchartsViewModel>(items.AsQueryable(), g)
+            var items = new List<ChartsViewModel>() { new ChartsViewModel { Id = 1, Values = dataPoints } };
+            return Json(new GridModelBuilder<ChartsViewModel>(items.AsQueryable(), g)
             {
                 Key = "Id", // needed for api select, update, tree, nesting, EF
                 GetItem = () => items.FirstOrDefault(i => i.Id == Convert.ToInt64(g.Key)), // called by the grid.api.update ( edit popupform success js func )
@@ -50,7 +47,7 @@ namespace GraphsExample.Controllers
         }
 
 
-        [HttpGet]
+        /*[HttpGet]
         public IActionResult GetChartImgByValues(string valuesStr, string chartName)
         {
             try
@@ -105,6 +102,6 @@ namespace GraphsExample.Controllers
             {
                 return null;
             }
-        }
+        }*/
     }
 }

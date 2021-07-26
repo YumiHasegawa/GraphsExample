@@ -1,10 +1,7 @@
 ﻿@using Omu.Awem.Helpers
 @using Omu.AwesomeMvc
 @using GraphsExample.Helpers
-@model GraphsExample.ViewModels.HighchartsViewModel
-
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+@model GraphsExample.ViewModels.ChartsViewModel
 
 @{
     ViewData["Title"] = "Highcharts";
@@ -13,17 +10,17 @@
 @using (Html.Awe().BeginContext())
 {
     @Html.DisplayForModel()
-    var grid = "Highcharts";
+    var grid = "ChartsJS";
     var gridId = Html.Awe().GetContextPrefix() + grid;
     object gg = null;
 
     <div>
         @(Html.Awe().Grid(grid)
-            .Url(Url.Action("GridGetItems", "Highcharts"))
+            .Url(Url.Action("GridGetItems", "Charts"))
             .RowClassClientFormat("infoBackground")
             .Mod(a => a.Loading(true, true, "no items"))
             .Columns(
-                new Column { Header = "Graph column", Width = 200, ClientFormatFunc = "getGraph" },
+                new Column { Header = "Graph column", Width = 200, ClientFormatFunc = "getImage" },
                 new Column { Header = "Any column" }
             )
         .ShowGroupBar(false)
@@ -34,14 +31,13 @@
         .Paging(false)
         .Persistence(Persistence.None))
     </div>
-
     <div>
         <canvas id="myChart"></canvas>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript">
-        function getGraph(o) {
-            var v = [];
+        /*function getGraph(o) {
             $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
@@ -51,21 +47,47 @@
                     "chartName": "Values"
                 },
                 async: false,
-                url: '/Highcharts/GetChartImgByValues'
+                url: '/Charts/GetChartImgByValues'
             }).then(function (response) {
                 console.log(response);
-
-                var bb = document.getElementById('myChart');
-                b.append(response);
-
-                //v.push(response);
                 var arr = response.split('<script');
                 $('<script' + arr[1]).appendTo(document.body);
-                v.push(arr[0]);
+                return arr[0];
             });
-            console.log(v);
-            return v;
+        }*/
+
+        function getImage(o) {
+
         }
+
+        const labels = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+        ];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'My First dataset',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data,
+            options: {}
+        };
+
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
 
     </script>
 }
