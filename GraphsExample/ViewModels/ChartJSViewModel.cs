@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphsExample.ViewModels
 {
-    public class ChartsViewModel
+    public class ChartJSViewModel
     {
         public long Id { get; set; }
         public List<DataPoint> Values { get; set; }

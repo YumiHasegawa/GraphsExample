@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace GraphsExample.Controllers
 {
-    public class ChartsController : Controller
+    public class ChartJSController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
 
-        private object MapToGridModel(ChartsViewModel o)
+        private object MapToGridModel(ChartJSViewModel o)
         {
             return
                 new
@@ -37,8 +37,8 @@ namespace GraphsExample.Controllers
                 dataPoints.Add(new DataPoint(i, y));
             }
 
-            var items = new List<ChartsViewModel>() { new ChartsViewModel { Id = 1, Values = dataPoints } };
-            return Json(new GridModelBuilder<ChartsViewModel>(items.AsQueryable(), g)
+            var items = new List<ChartJSViewModel>() { new ChartJSViewModel { Id = 1, Values = dataPoints } };
+            return Json(new GridModelBuilder<ChartJSViewModel>(items.AsQueryable(), g)
             {
                 Key = "Id", // needed for api select, update, tree, nesting, EF
                 GetItem = () => items.FirstOrDefault(i => i.Id == Convert.ToInt64(g.Key)), // called by the grid.api.update ( edit popupform success js func )

@@ -67,7 +67,7 @@ namespace GraphsExample
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Charts}/{action=Index}/{id?}");
+                    template: "{controller=ChartJS}/{action=Index}/{id?}");
             });
 
             /*app.UseEndpoints(endpoints =>

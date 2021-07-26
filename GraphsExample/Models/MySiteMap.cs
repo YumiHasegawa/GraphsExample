@@ -13,7 +13,7 @@ namespace GraphsExample.Models
 
         static MySiteMap()
         {
-            _items.Add(new SiteMapItem { Name = "ChartsJS", Controller = "Charts", Action = "Index" });
+            _items.Add(new SiteMapItem { Name = "ChartJS", Controller = "ChartJS", Action = "Index" });
             _items.Add(new SiteMapItem { Name = "Highcharts", Controller = "Highcharts", Action = "Index" });
         }
     }

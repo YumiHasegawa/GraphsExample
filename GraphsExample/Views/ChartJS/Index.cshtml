@@ -1,26 +1,25 @@
 ﻿@using Omu.Awem.Helpers
 @using Omu.AwesomeMvc
-@using GraphsExample.Helpers
-@model GraphsExample.ViewModels.ChartsViewModel
+@model GraphsExample.ViewModels.ChartJSViewModel
 
 @{
-    ViewData["Title"] = "Highcharts";
+    ViewData["Title"] = "ChartJS";
 }
 
 @using (Html.Awe().BeginContext())
 {
     @Html.DisplayForModel()
-    var grid = "ChartsJS";
+    var grid = "ChartJS";
     var gridId = Html.Awe().GetContextPrefix() + grid;
     object gg = null;
 
     <div>
         @(Html.Awe().Grid(grid)
-            .Url(Url.Action("GridGetItems", "Charts"))
+            .Url(Url.Action("GridGetItems", "ChartJS"))
             .RowClassClientFormat("infoBackground")
             .Mod(a => a.Loading(true, true, "no items"))
             .Columns(
-                new Column { Header = "Graph column", Width = 200, ClientFormatFunc = "getImage" },
+                new Column { Header = "Graph column", Width = 200, ClientFormat = "<canvas id=\"myChart\"></canvas>" }, //ClientFormatFunc = "getImage"
                 new Column { Header = "Any column" }
             )
         .ShowGroupBar(false)
@@ -32,7 +31,7 @@
         .Persistence(Persistence.None))
     </div>
     <div>
-        <canvas id="myChart"></canvas>
+        <!--<canvas id="myChart"></canvas>-->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -84,10 +83,16 @@
             options: {}
         };
 
-        var myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
+        $(document).ready(function () {
+            $('#@(gridId)').on('aweload', function (e, data) {
+                var v = document.getElementById("myChart");
+                console.log(v);
+                var myChart = new Chart(
+                    v.getContext("2d"),
+                    config
+                );
+            });
+        });
 
     </script>
 }

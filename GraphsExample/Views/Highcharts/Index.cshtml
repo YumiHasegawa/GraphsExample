@@ -3,8 +3,7 @@
 @using GraphsExample.Helpers
 @model GraphsExample.ViewModels.HighchartsViewModel
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
 
 @{
     ViewData["Title"] = "Highcharts";
@@ -23,7 +22,7 @@
             .RowClassClientFormat("infoBackground")
             .Mod(a => a.Loading(true, true, "no items"))
             .Columns(
-                new Column { Header = "Graph column", Width = 200, ClientFormatFunc = "getGraph" },
+                new Column { Header = "Graph column", Width = 200, ClientFormat = "<div id=\"myChart\"></div>" }, //ClientFormatFunc = "getGraph"
                 new Column { Header = "Any column" }
             )
         .ShowGroupBar(false)
@@ -36,7 +35,7 @@
     </div>
 
     <div>
-        <canvas id="myChart"></canvas>
+        <!--<canvas id="myChart"></canvas>-->
     </div>
 
     <script type="text/javascript">
@@ -56,7 +55,7 @@
                 console.log(response);
 
                 var bb = document.getElementById('myChart');
-                b.append(response);
+                bb.append(response);
 
                 //v.push(response);
                 var arr = response.split('<script');
@@ -66,6 +65,54 @@
             console.log(v);
             return v;
         }
+
+        $(document).ready(function () {
+            $('#@(gridId)').on('aweload', function (e, data) {
+                /*var v = [];
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: {
+                        "valuesStr": JSON.stringify([{ 1: 1}, {2: 2}, { 3: 3}, {4: 4}]),
+                        "chartName": "Values"
+                    },
+                    async: false,
+                    url: '/Highcharts/GetChartImgByValues'
+                }).then(function (response) {
+
+                    Highcharts.stockChart('myChart', response);
+
+                    //console.log(response);
+
+                    //var bb = document.getElementById('myChart');
+                    //bb.getContext("2d").appendTo(response);
+
+                    //v.push(response);
+
+                    //var arr = response.split('<script');
+                    //$('<script' + arr[1]).appendTo(document.body);
+                    //v.push(arr[0]);
+                });
+                //console.log(v);
+                return v;*/
+
+                Highcharts.stockChart('myChart', {
+                    rangeSelector: {
+                        selected: 1
+                    },
+
+                    title: {
+                        text: 'AAPL Stock Price'
+                    },
+                        series: [{
+                            data: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                            pointInterval: 24 * 60 * 60 * 1000
+                        }]
+                });
+
+            });
+        });
 
     </script>
 }
