@@ -1648,6 +1648,11 @@ textarea#ConnectionString {
     filter: invert(1);
 }
 
+.awe-row .graphCss {
+    width: 100%;
+    height: 100%;
+}
+
 tr.selected-row {
     background: #696760
 }

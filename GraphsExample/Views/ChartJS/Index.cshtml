@@ -19,7 +19,7 @@
             .RowClassClientFormat("infoBackground")
             .Mod(a => a.Loading(true, true, "no items"))
             .Columns(
-                new Column { Header = "Graph column", Width = 200, ClientFormat = "<canvas id=\"myChart\"></canvas>" }, //ClientFormatFunc = "getImage"
+                new Column { Header = "Graph column", Width = 200, ClientFormatFunc = "getGraph" }, //ClientFormat = "<canvas id=\"myChart\"></canvas>" ClientFormatFunc = "getGraph"
                 new Column { Header = "Any column" }
             )
         .ShowGroupBar(false)
@@ -31,34 +31,17 @@
         .Persistence(Persistence.None))
     </div>
     <div>
-        <!--<canvas id="myChart"></canvas>-->
+        <canvas id="myChart"></canvas>
     </div>
+    <img id="image"/>
+    <div id="hidden_container" style="visibility: hidden; width:none; height:none"></div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript">
-        /*function getGraph(o) {
-            $.ajax({
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: {
-                    "valuesStr": JSON.stringify(o.values),
-                    "chartName": "Values"
-                },
-                async: false,
-                url: '/Charts/GetChartImgByValues'
-            }).then(function (response) {
-                console.log(response);
-                var arr = response.split('<script');
-                $('<script' + arr[1]).appendTo(document.body);
-                return arr[0];
-            });
-        }*/
 
-        function getImage(o) {
-
-        }
-
+        var myChart;
         const labels = [
             'January',
             'February',
@@ -80,14 +63,53 @@
         const config = {
             type: 'line',
             data,
-            options: {}
+            options: {
+                animation: {
+                    onComplete: function () {
+                        document.getElementById("image").src = myChart.toBase64Image();
+                    }
+                }
+            }
         };
+
+        function getGraph(o) {
+
+            //var canvasDiv = document.createElement('div');
+            //canvasDiv.setAttribute("style", "width:400px");
+            var canvasDiv = document.getElementById("hidden_container");
+            var canvasElem = document.createElement('canvas');
+            canvasElem.id = o.id + '-Canvas';
+            canvasElem.width = "100px";
+            canvasElem.height = "100px";
+            canvasDiv.appendChild(canvasElem);
+
+            var image = new Image();
+            image.id = o.id + '-Image';
+            image.className = "graphCss";
+
+            var chart = new Chart(
+                canvasElem.getContext("2d"),
+                {
+                    type: 'line',
+                    data,
+                    options: {
+                        animation: {                         
+                            onComplete: function () {
+                                var img = document.getElementById(o.id + '-Image');
+                                img.src = chart.toBase64Image();
+                            }
+                        }
+                    }
+                });
+
+            canvasDiv.removeChild(canvasElem);
+            return image.outerHTML;
+        }
 
         $(document).ready(function () {
             $('#@(gridId)').on('aweload', function (e, data) {
                 var v = document.getElementById("myChart");
-                console.log(v);
-                var myChart = new Chart(
+                myChart = new Chart(
                     v.getContext("2d"),
                     config
                 );
@@ -95,4 +117,11 @@
         });
 
     </script>
+
+    <style>
+        .awe-row .graphCss {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 }

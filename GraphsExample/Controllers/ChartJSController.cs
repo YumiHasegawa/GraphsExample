@@ -21,6 +21,7 @@ namespace GraphsExample.Controllers
             return
                 new
                 {
+                    o.Id,
                     o.Values,
                 };
         }
