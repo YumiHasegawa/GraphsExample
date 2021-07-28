@@ -30,7 +30,7 @@
             .Persistence(Persistence.None))
     </div>
     <div>
-        <canvas id="myChart"></canvas>
+        <canvas id="myChart" width="1000"></canvas>
     </div>
     <div id="hidden_container" style="visibility: hidden; width:none; height:none"></div>
 
@@ -52,6 +52,7 @@
             image.className = "graphCss";
             image.style = "opacity:0"; //to avoid ugly loading image border
 
+            console.log(o.values);
             var chart = new Chart(
                 canvasElem.getContext("2d"),
                 {
@@ -63,7 +64,7 @@
                             backgroundColor: 'rgb(255, 99, 132)',
                             borderColor: 'rgb(255, 99, 132)',
                             borderWidth: 10,
-                            data: o.values,
+                            data: o.values
                         }]
                     },
                     options: {
@@ -77,7 +78,6 @@
                             }
                         },
                         animation: {
-                            //maintainAspectRatio: false,
                             onComplete: function () {
                                 var img = document.getElementById(o.id + '-Image');
                                 img.src = chart.toBase64Image();
@@ -96,30 +96,55 @@
                 var v = document.getElementById("myChart");
 
                 var values = @(Html.Raw(ViewBag.TestValues));
+                console.log(values);
                 myChart = new Chart(
                     v.getContext("2d"),
                     {
                         type: 'line',
                         data: {
-                            labels: values.map(a => a.x),
+                            labels: values.map(a => a.X),
                             datasets: [{
                                 label: 'Data',
                                 backgroundColor: 'rgb(255, 99, 132)',
                                 borderColor: 'rgb(255, 99, 132)',
-                                borderWidth: 10,
                                 data: values,
                             }]
                         },
                         options: {
+                            responsive: false,
                             parsing: {
-                                xAxisKey: 'x',
-                                yAxisKey: 'y'
+                                xAxisKey: 'X',
+                                yAxisKey: 'Y'
                             },
                             plugins: {
                                 legend: {
                                     display: true
                                 }
-                            }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Data Line Chart'
+                            },
+                            scales: {
+                                x: {
+                                    display: true,
+                                    title: {
+                                        display: true,
+                                        text: 'X'
+                                    }
+                                },
+                                y: {
+                                    display: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Y'
+                                    }
+                                }
+                            },
+                            interaction: {
+                                intersect: false,
+                                mode: 'index',
+                            },
                         }
                     });
             });

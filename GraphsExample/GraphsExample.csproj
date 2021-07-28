@@ -326,4 +326,13 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="_service install.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="_service uninstall.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
