@@ -19,7 +19,7 @@
             .RowClassClientFormat("infoBackground")
             .Mod(a => a.Loading(true, true, "no items"))
             .Columns(
-                new Column { Header = "Graph column", Width = 200, ClientFormatFunc = "getGraph" }, //ClientFormat = "<canvas id=\"myChart\"></canvas>" ClientFormatFunc = "getGraph"
+                new Column { Header = "Graph column", Width = 225, ClientFormatFunc = "getGraph"},
                 new Column { Header = "Any column" }
             )
         .ShowGroupBar(false)
@@ -33,7 +33,6 @@
     <div>
         <canvas id="myChart"></canvas>
     </div>
-    <img id="image"/>
     <div id="hidden_container" style="visibility: hidden; width:none; height:none"></div>
 
 
@@ -41,7 +40,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript">
 
-        var myChart;
         const labels = [
             'January',
             'February',
@@ -63,37 +61,51 @@
         const config = {
             type: 'line',
             data,
-            options: {
-                animation: {
-                    onComplete: function () {
-                        document.getElementById("image").src = myChart.toBase64Image();
-                    }
-                }
-            }
+            options: {}
         };
 
         function getGraph(o) {
-
-            //var canvasDiv = document.createElement('div');
-            //canvasDiv.setAttribute("style", "width:400px");
             var canvasDiv = document.getElementById("hidden_container");
             var canvasElem = document.createElement('canvas');
             canvasElem.id = o.id + '-Canvas';
-            canvasElem.width = "100px";
-            canvasElem.height = "100px";
+            canvasElem.width = 100;
+            canvasElem.height = 50;
             canvasDiv.appendChild(canvasElem);
 
             var image = new Image();
             image.id = o.id + '-Image';
             image.className = "graphCss";
 
+
+            var values = o.values;
+            console.log(values);
+
             var chart = new Chart(
                 canvasElem.getContext("2d"),
                 {
                     type: 'line',
-                    data,
+                    data: {
+                        labels: [0,1,2,3,4,5,6,7,8,9], //fix - get from o.values.x
+                        datasets: [{
+                            label: 'Data',
+                            backgroundColor: 'rgb(255, 99, 132)',
+                            borderColor: 'rgb(255, 99, 132)',
+                            borderWidth: 10,
+                            data: o.values,
+                        }]
+                    },
                     options: {
-                        animation: {                         
+                        parsing: {
+                            xAxisKey: 'x',
+                            yAxisKey: 'y'
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        animation: {   
+                            maintainAspectRatio: false,
                             onComplete: function () {
                                 var img = document.getElementById(o.id + '-Image');
                                 img.src = chart.toBase64Image();
@@ -117,11 +129,4 @@
         });
 
     </script>
-
-    <style>
-        .awe-row .graphCss {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
 }

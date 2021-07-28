@@ -1649,8 +1649,8 @@ textarea#ConnectionString {
 }
 
 .awe-row .graphCss {
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 100px;
 }
 
 tr.selected-row {

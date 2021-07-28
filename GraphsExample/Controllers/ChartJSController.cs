@@ -28,14 +28,12 @@ namespace GraphsExample.Controllers
 
         public IActionResult GridGetItemsAsync(GridParams g)
         {
-            double count = 100, y = 10;
             Random random = new Random();
             List<DataPoint> dataPoints = new List<DataPoint>();
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < 10; i++)
             {
-                y += random.Next(-10, 11);
-                dataPoints.Add(new DataPoint(i, y));
+                dataPoints.Add(new DataPoint(i, random.Next(0, 10)));
             }
 
             var items = new List<ChartJSViewModel>() { new ChartJSViewModel { Id = 1, Values = dataPoints } };
