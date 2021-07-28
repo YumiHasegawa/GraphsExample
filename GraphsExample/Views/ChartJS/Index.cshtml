@@ -11,7 +11,6 @@
     @Html.DisplayForModel()
     var grid = "ChartJS";
     var gridId = Html.Awe().GetContextPrefix() + grid;
-    object gg = null;
 
     <div>
         @(Html.Awe().Grid(grid)
@@ -19,16 +18,16 @@
             .RowClassClientFormat("infoBackground")
             .Mod(a => a.Loading(true, true, "no items"))
             .Columns(
-                new Column { Header = "Graph column", Width = 225, ClientFormatFunc = "getGraph"},
-                new Column { Header = "Any column" }
+                 new Column { Header = "Graph column", Width = 225, ClientFormatFunc = "getGraph" },
+                 new Column { Header = "Any column" }
             )
-        .ShowGroupBar(false)
-        .Groupable(false)
-        .Sortable(false)
-        .Reorderable(false)
-        .Resizable(true)
-        .Paging(false)
-        .Persistence(Persistence.None))
+            .ShowGroupBar(false)
+            .Groupable(false)
+            .Sortable(false)
+            .Reorderable(false)
+            .Resizable(true)
+            .Paging(false)
+            .Persistence(Persistence.None))
     </div>
     <div>
         <canvas id="myChart"></canvas>
@@ -39,30 +38,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript">
-
-        const labels = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-        ];
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'My First dataset',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
-            }]
-        };
-
-        const config = {
-            type: 'line',
-            data,
-            options: {}
-        };
 
         function getGraph(o) {
             var canvasDiv = document.getElementById("hidden_container");
@@ -75,17 +50,14 @@
             var image = new Image();
             image.id = o.id + '-Image';
             image.className = "graphCss";
-
-
-            var values = o.values;
-            console.log(values);
+            image.style = "opacity:0"; //to avoid ugly loading image border
 
             var chart = new Chart(
                 canvasElem.getContext("2d"),
                 {
                     type: 'line',
                     data: {
-                        labels: [0,1,2,3,4,5,6,7,8,9], //fix - get from o.values.x
+                        labels: o.values.map(a=>a.x),
                         datasets: [{
                             label: 'Data',
                             backgroundColor: 'rgb(255, 99, 132)',
@@ -104,11 +76,12 @@
                                 display: false
                             }
                         },
-                        animation: {   
-                            maintainAspectRatio: false,
+                        animation: {
+                            //maintainAspectRatio: false,
                             onComplete: function () {
                                 var img = document.getElementById(o.id + '-Image');
                                 img.src = chart.toBase64Image();
+                                img.style = "opacity:1";
                             }
                         }
                     }
@@ -116,17 +89,48 @@
 
             canvasDiv.removeChild(canvasElem);
             return image.outerHTML;
-        }
+        };
 
         $(document).ready(function () {
             $('#@(gridId)').on('aweload', function (e, data) {
                 var v = document.getElementById("myChart");
+
+                var values = @(Html.Raw(ViewBag.TestValues));
                 myChart = new Chart(
                     v.getContext("2d"),
-                    config
-                );
+                    {
+                        type: 'line',
+                        data: {
+                            labels: values.map(a => a.x),
+                            datasets: [{
+                                label: 'Data',
+                                backgroundColor: 'rgb(255, 99, 132)',
+                                borderColor: 'rgb(255, 99, 132)',
+                                borderWidth: 10,
+                                data: values,
+                            }]
+                        },
+                        options: {
+                            parsing: {
+                                xAxisKey: 'x',
+                                yAxisKey: 'y'
+                            },
+                            plugins: {
+                                legend: {
+                                    display: true
+                                }
+                            }
+                        }
+                    });
             });
         });
 
     </script>
+
+    <style>
+        .awe-row .graphCss {
+            width: 150px;
+            height: 80px;
+        }
+    </style>
 }

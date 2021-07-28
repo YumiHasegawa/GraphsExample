@@ -54,28 +54,27 @@ label {
 }
 
 @font-face {
-    font-family: 'Montserrat-Regular';
-    src: url('fonts/Montserrat-Regular.eot');
-    src: url('fonts/Montserrat-Regular.woff') format('woff'), url('../css/fonts/Montserrat-Regular.ttf') format('truetype');
+    font-family: 'PT Sans';
+    src: url('fonts/PT Sans.ttf');
+    src: url('fonts/PT Sans.woff') format('woff'), url('../css/fonts/PT Sans.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Montserrat-SemiBold';
-    src: url('fonts/Montserrat-SemiBold.eot');
-    src: url('fonts/Montserrat-SemiBold.woff') format('woff'), url('../css/fonts/Montserrat-SemiBold.ttf') format('truetype');
+    font-family: 'PT Sans-Bold';
+    src: url('fonts/PT Sans-Bold.ttf');
+    src: url('fonts/PT Sans-Bold.woff') format('woff'), url('../css/fonts/PT Sans-Bold.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
 body {
-    font-family: Montserrat-Regular;
+    font-family: PT Sans;
     font-size: 15px;
     color: #262626;
     overflow-y: scroll;
     line-height: 1.42857143;
-    background: #f7f7f7;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-text-size-adjust: 100%;
@@ -231,7 +230,7 @@ body.black-cab .menu a:hover {
 }
 
 .awe-col, .elabel, .menu, h1, h2, h3, b {
-    font-family: Montserrat-SemiBold;
+    font-family: PT Sans-Bold;
 }
 
 select.awe-display {
@@ -266,7 +265,8 @@ select.awe-display {
 
 /* grid btns */
 .editbtn, .delbtn, .editnst, .delnst {
-    padding: .2em .3em;
+        padding: 5px 8px 6px;
+		width:100%
 }
 
 .ico-crud {
@@ -544,6 +544,7 @@ select.awe-hour, select.awe-min, select.awe-apm {
     margin-left: auto;
     margin-right: auto;
     position: relative;
+	background:#fff
 }
 
 #title {
@@ -814,7 +815,7 @@ pre {
     }
 
 .mnitm {
-    padding: .5em;
+    padding: 0 24px 0;
     cursor: pointer;
 }
 
@@ -1315,6 +1316,7 @@ body:not(.black-cab) .awe-content .wrap {
 /*grid custom render*/
 .awe-itc {
     padding: .5em;
+	line-height: 48px;
 }
 
 .itcard, .edcard, .gwrap {
@@ -1540,7 +1542,6 @@ textarea#ConnectionString {
 }
 
 .start {
-    width: fit-content;
     min-width: -webkit-fill-available;
     min-width: -moz-available;
 }
@@ -1570,7 +1571,7 @@ textarea#ConnectionString {
     border: 1px solid #303948 !important;
     display: inline-block;
     padding: 5px 10px;
-    color: #262626;
+    color: bisque;
 }
 
 .inlineFlex {
@@ -1634,7 +1635,6 @@ textarea#ConnectionString {
 
 .detailsCssDetails {
     word-break: break-all;
-    border: 1px solid #40403d;
     padding: 10px;
     margin: 10px;
 }
@@ -1646,11 +1646,6 @@ textarea#ConnectionString {
 .awe-row img {
     width: 20px;
     filter: invert(1);
-}
-
-.awe-row .graphCss {
-    width: 200px;
-    height: 100px;
 }
 
 tr.selected-row {
@@ -1675,45 +1670,64 @@ tr.selected-row {
     background-color: #A04A4A;
 }
 
-.positiveNumberColor {
-    color: #009f78;
-}
-
-.negativeNumberColor {
-    color: #ff6a5f
-}
 .start a {
     color: black;
 }
-.start .headerName {
-    font-family: Montserrat-SemiBold;
-    margin-left: 30px;
-    float: left;
-    font-size: 30px;
-    font-weight: bold;
-    color: #4E69A2;
-    margin-right: 100px;
-    align-self:center;
+.start #header, .start .csettings, .start .expl {
+    font-family: PT Sans;
+    padding:10px 0 10px 15px;
+    font-size: 25px;
+    color: #ffffff;
+	font-weight: bold;
+	background: #373D4A;
 }
 
-.start .header {
-    display: inline-flex;
-    width: 100%;
-    background-color:white;
+#maincont .awe-content {
+    overflow-y: scroll;
+    max-height: 300px;
 }
 
-#HeaderMenu {
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
+.cstm {border: 1px solid #007357 !important;width: fit-content;padding: 0 7px;border-radius: 5px;color:#007357}
+.awe-btn {padding: 5px 10px;margin-right: 12px;}
+.start .header {background:#373D4A;margin-bottom: 32px}
+.headerImg {width:70px; display:inline-block;margin-left: 25px;}
+.headerMenu {display:inline-block;vertical-align: middle;} .headerMenu a {color:#A3A6AC; text-decoration:none} 
+.selected {background:transparent; color:#ffffff !important; padding-bottom:19px;border-bottom: 3px solid #DC7B7A;}
+.headerMenu a:hover {background:transparent;color:#ccc}
+#HeaderMenu .awe-tablc {background:#373D4A;}
+.headerName {display:inline-block;color:#fff;font-size:25px;width: 180px;font-weight: 600;margin: 10px 0 0 30px;
 }
 
-#HeaderMenu a {
-    text-decoration: none;
+.positiveNumberColor {
+color: #009f78;
 }
 
-    #HeaderMenu a.selected {
-        border-bottom: solid;
-        border-bottom-width: 5px;
-        border-bottom-color: #5c87b2;
-    }
+.negativeNumberColor {
+color: #ff6a5f
+}
+
+.start .saButtons{
+    display:inline-flex;
+}
+
+.start .saButtons button {
+    margin-right: 10px;
+}
+
+.start td{
+    white-space:pre-line;
+}
+
+И поправить классы (это не обязательно, вы скорее всего сами потом будете править):
+
+.valueCssDetails {
+    width: 700px;
+    white-space: pre;
+}
+
+.detailsCssDetails {
+    width:auto;
+    word-break: break-all;
+    padding: 10px;
+    margin: 10px;
+}
